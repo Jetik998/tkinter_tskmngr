@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from tkinter import ttk, messagebox
 import json
 
-from select import select
+
 
 
 # Логика
