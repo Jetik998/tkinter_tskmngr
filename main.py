@@ -133,3 +133,4 @@ tree.heading("date", text="Дедлайн")
 tree.pack(expand=True, fill="both")
 tree.bind("<ButtonRelease-1>", get_id)
 root.mainloop()
+#НОВАЯ ФИЧА
