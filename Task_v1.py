@@ -1,9 +1,15 @@
+
 import tkinter as tk
-from dataclasses import dataclass
 from tkinter import ttk, messagebox
-import json
 from tkcalendar import DateEntry
 from tkinter import END
+from dataclasses import dataclass
+import json
+
+
+
+
+
 
 
 class Task:
@@ -17,7 +23,7 @@ class Task:
         return f'{self.name} {self.priority} {self.deadline}'
 
 class Data:
-    data = []
+    data_сache = []
 
 def add_task():
     global task_list
