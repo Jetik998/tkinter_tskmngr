@@ -6,13 +6,13 @@ class Controller:
 
 
     def add_task(self):
-        name = self.ui.frame.entry.get()
-        priority = self.ui.frame.combo.get()
-        deadline = self.ui.frame.date_entry.get()
+        name = self.ui.frame1.entry.get()
+        priority = self.ui.frame1.combo.get()
+        deadline = self.ui.frame1.date_entry.get()
         self.logic.data.add_task(name, priority, deadline)
 
     def _bind_events(self):
-        self.ui.frame.btn.config(command=self.add_task)
+        self.ui.frame1.btn.config(command=self.add_task)
 
 
 

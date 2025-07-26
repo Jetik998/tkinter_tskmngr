@@ -2,6 +2,7 @@ import tkinter as tk
 from ui import UI
 from logic import Logic
 from controller import Controller
+import json
 
 if __name__ == "__main__":
     root = tk.Tk()

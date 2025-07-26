@@ -15,10 +15,15 @@ class UI:
         self.style.configure("TEntry", font=("Segoe UI", 10), padding=5)
         self.style.configure("TCombobox", font=("Segoe UI", 10), padding=5, background=self.root.cget("background"))
 
-        self.frame = MyFrame(root)
-        self.frame.pack(padx=10, pady=200)
+        self.frame1 = MyFrame1(root)
+        self.frame1.pack(padx=10, pady=150)
+        self.frame2 = MyFrame2(root)
+        self.frame2.pack(padx=10, pady=100)
 
-class MyFrame(tk.Frame):
+
+
+
+class MyFrame1(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
@@ -41,5 +46,16 @@ class MyFrame(tk.Frame):
         self.btn = ttk.Button(self, text="Добавить")
         self.btn.grid(row=1, column=3, padx=5, pady=5)
 
+class MyFrame2(tk.Frame):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+
+        self.tree = ttk.Treeview(self, columns=("name", "priority", "date"), show="headings")
+        self.tree.heading("name", text="Задача")
+        self.tree.heading("priority", text="Приоритет")
+        self.tree.heading("date", text="Дедлайн")
+        self.tree.grid(row=3, column=0, padx=5, pady=5)
+        self.tree.bind("<ButtonRelease-1>", )
 
 

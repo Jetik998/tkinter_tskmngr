@@ -23,9 +23,10 @@ class Task:
         return f'{self.name} {self.priority} {self.deadline}'
 
 class Data:
-    data_сache = []
+    data_cache = []
 
 def add_task():
+    pass
     global task_list
 
 
