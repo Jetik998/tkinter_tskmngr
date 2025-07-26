@@ -3,19 +3,19 @@ from tkinter import ttk
 from tkcalendar import DateEntry
 
 
-class App(tk.Tk):
-    def __init__(self):
-        super().__init__()
-        self.title("Tasklist")
-        self.geometry("1280x960")
+class UI:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Tasklist")
+        self.root.geometry("1280x960")
 
         self.style = ttk.Style()
         self.style.theme_use("clam")
-        self.style.configure("TLabel", font=("Segoe UI", 10), padding=5, background=self.cget("background"))
+        self.style.configure("TLabel", font=("Segoe UI", 10), padding=5, background=self.root.cget("background"))
         self.style.configure("TEntry", font=("Segoe UI", 10), padding=5)
-        self.style.configure("TCombobox", font=("Segoe UI", 10), padding=5, background=self.cget("background"))
+        self.style.configure("TCombobox", font=("Segoe UI", 10), padding=5, background=self.root.cget("background"))
 
-        self.frame = MyFrame(self)
+        self.frame = MyFrame(root)
         self.frame.pack(padx=10, pady=200)
 
 class MyFrame(tk.Frame):
@@ -40,5 +40,6 @@ class MyFrame(tk.Frame):
 
         self.btn = ttk.Button(self, text="Добавить")
         self.btn.grid(row=1, column=3, padx=5, pady=5)
+
 
 

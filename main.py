@@ -1,5 +1,11 @@
-from ui import App
+import tkinter as tk
+from ui import UI
+from logic import Logic
+from controller import Controller
 
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+    root = tk.Tk()
+    ui = UI(root)
+    logic = Logic()
+    controller = Controller(ui, logic)
+    root.mainloop()
