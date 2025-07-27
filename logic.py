@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Type
 from typing import List
 
@@ -27,14 +28,46 @@ class Task:
         task = Task(name=name, priority=priority, deadline=deadline)
         return task
 
-class Data:
-    data = []
+    def obj_to_dict(self) -> dict:
+        return {
+            'name': self.name,
+            'priority': self.priority,
+            'deadline': self.deadline
+        }
 
-    # Добавить задачу(объект) в список
+class Data:
+    filename = 'data.json'
+
+    # Функция для загрузки данных из файла
     @classmethod
-    def add_list(cls: Type["Data"], task) -> None:
-        cls.data.append(task)
-        print(cls.data)
+    def load_data(cls, filename: str):
+        if os.path.exists(filename) and os.path.getsize(filename) > 0:
+            with open(filename, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        return []
+
+    # Функция для сохранения данных в файл
+    @classmethod
+    def save_data(cls, filename: str, data):
+        with open(filename, 'w', encoding='utf-8') as f:
+            json.dump(data, f, ensure_ascii=False, indent=4)
+
+    # Добавление элемента
+    @classmethod
+    def new_task(cls: Type["Data"], task: object) -> None:
+        data = cls.load_data(cls.filename)
+        data.append(task)
+        for index, item in enumerate(data, start=1):
+            item['id'] = index
+        return data
+
+
+
+    classmethod
+    def add_task(cls):
+        data = load_data()
+        data.append(new_obj)
+        save_data(data)
 
     # Присвоение id
     @classmethod
@@ -42,15 +75,6 @@ class Data:
         for i, task in enumerate(cls.data, start=1):
             task.id = i
 
-    #Сериализация
-    @classmethod
-    def to_dict(cls: Type["Data"]) -> List[dict]:
-        return [task.__dict__ for task in cls.data]
-
-    @classmethod
-    def add_json(cls: Type["Data"]):
-        with open("data.json", 'w', encoding='utf-8') as file:
-            json.dump(cls.to_dict(), file, ensure_ascii=False, indent=4)
 
     @staticmethod
     def view_json() -> None:
@@ -58,14 +82,7 @@ class Data:
             content = file.read()
             print(content)
 
-    #Оркестратор
-    @classmethod
-    def new_task(cls: Type["Data"], task: object) -> None:
-        cls.add_list(task)
-        cls.generate_ids()
-        cls.to_dict()
-        cls.add_json()
-        cls.view_json()
+
 
 
 
