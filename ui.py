@@ -46,6 +46,11 @@ class MyFrame1(tk.Frame):
         self.btn = ttk.Button(self, text="Добавить")
         self.btn.grid(row=1, column=3, padx=5, pady=5)
 
+    def reset_inputs(self):
+        self.entry.delete(0, "end")
+        self.combo.delete(0, "end")
+        self.date_entry.delete(0, "end")
+
 class MyFrame2(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
