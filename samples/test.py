@@ -1,6 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
-from tkcalendar import DateEntry  # Для выбора даты нужно установить библиотеку tkcalendar
+from tkcalendar import (
+    DateEntry,
+)  # Для выбора даты нужно установить библиотеку tkcalendar
+
 
 def next_step_1():
     # Получаем значение из первого Entry
@@ -12,6 +15,7 @@ def next_step_1():
     combo.pack()
     btn2.pack()
 
+
 def next_step_2():
     # Получаем выбранный вариант из combobox
     value2 = combo.get()
@@ -22,11 +26,13 @@ def next_step_2():
     date_entry.pack()
     btn3.pack()
 
+
 def finish():
     # Получаем выбранную дату
     value3 = date_entry.get_date()
     print("Дата:", value3)
     root.quit()
+
 
 root = tk.Tk()
 root.title("Многоэтапный ввод")
