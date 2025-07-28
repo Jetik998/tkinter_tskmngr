@@ -38,7 +38,7 @@ class MyFrame1(tk.Frame):
         self.combo = ttk.Combobox(self, values=["Критично", "Важно", "Нормально", "Не важно"], width=15)
         self.combo.grid(row=1, column=1, padx=5, pady=5)
 
-        self.label_date = ttk.Label(self, text="Приоритет")
+        self.label_date = ttk.Label(self, text="Дедлайн")
         self.label_date.grid(row=0, column=2, padx=5, pady=5)
         self.date_entry = DateEntry(self)
         self.date_entry.grid(row=1, column=2, padx=5, pady=5)
@@ -62,5 +62,14 @@ class MyFrame2(tk.Frame):
         self.tree.heading("date", text="Дедлайн")
         self.tree.grid(row=3, column=0, padx=5, pady=5)
         self.tree.bind("<ButtonRelease-1>", )
+
+    def clear_tree(self):
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+    def add_to_treeview(self, task):
+        self.tree.insert('', 'end', values=(task["name"], task["priority"], task["deadline"]))
+
+
 
 

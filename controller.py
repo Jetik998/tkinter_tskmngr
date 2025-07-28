@@ -3,6 +3,7 @@ class Controller:
         self.ui = ui
         self.logic = logic
         self._bind_events()
+        self.load_treeview()
 
 
     def save_task(self):
@@ -11,8 +12,16 @@ class Controller:
         deadline = self.ui.frame1.date_entry.get()
         self.ui.frame1.reset_inputs()
         task = self.logic.task.create_task(name, priority, deadline)
+        task = self.logic.task.obj_to_dict(task)
         self.logic.data.new_task(task)
+        self.ui.frame2.clear_tree()
+        self.load_treeview()
 
+    def load_treeview(self):
+        data = self.logic.data.load_data(self.logic.data.filename)
+        if data:
+            for task in data:
+                self.ui.frame2.add_to_treeview(task)
 
 
     def _bind_events(self):

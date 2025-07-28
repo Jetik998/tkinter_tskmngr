@@ -1,12 +1,11 @@
 import json
 import os
-from typing import Type
-from typing import List
+from typing import Union, List, Dict, Any, Type
 
 
 
 class Task:
-    def __init__(self, name=None, priority=None,deadline=None):
+    def __init__(self, name: str = None, priority: str = None,deadline: str = None):
         self.name = name
         self.priority = priority
         self.deadline = self._to_iso_date(deadline)
@@ -38,9 +37,9 @@ class Task:
 class Data:
     filename = 'data.json'
 
-    # Функция для загрузки данных из файла
+    # Функция для выгрузки данных из файла
     @classmethod
-    def load_data(cls, filename: str):
+    def load_data(cls, filename: str)-> Any:
         if os.path.exists(filename) and os.path.getsize(filename) > 0:
             with open(filename, 'r', encoding='utf-8') as f:
                 return json.load(f)
@@ -48,43 +47,24 @@ class Data:
 
     # Функция для сохранения данных в файл
     @classmethod
-    def save_data(cls, filename: str, data):
+    def save_data(cls, filename: str, data)-> None:
         with open(filename, 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
+            print(json.dumps(data, ensure_ascii=False, indent=4))
 
-    # Добавление элемента
+    # Добавление задачи
     @classmethod
     def new_task(cls: Type["Data"], task: object) -> None:
         data = cls.load_data(cls.filename)
         data.append(task)
         for index, item in enumerate(data, start=1):
             item['id'] = index
-        return data
+        cls.save_data(cls.filename, data)
 
-
-
-    classmethod
-    def add_task(cls):
-        data = load_data()
-        data.append(new_obj)
-        save_data(data)
-
-    # Присвоение id
     @classmethod
-    def generate_ids(cls: Type["Data"]) -> None:
-        for i, task in enumerate(cls.data, start=1):
-            task.id = i
-
-
-    @staticmethod
-    def view_json() -> None:
-        with open("data.json", 'r', encoding='utf-8') as file:
-            content = file.read()
-            print(content)
-
-
-
-
+    def add_to_treeview(cls) -> Any:
+        data = cls.load_data(cls.filename)
+        return data
 
 
 
