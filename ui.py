@@ -14,6 +14,9 @@ class UI:
         self.style.configure("TLabel", font=("Segoe UI", 10), padding=5, background=self.root.cget("background"))
         self.style.configure("TEntry", font=("Segoe UI", 10), padding=5)
         self.style.configure("TCombobox", font=("Segoe UI", 10), padding=5, background=self.root.cget("background"))
+        self.style.configure("Custom.Treeview", font=("Segoe UI", 12))
+        self.style.configure("Custom.Treeview.Heading", font=("Segoe UI", 10))
+
 
         self.frame1 = MyFrame1(root)
         self.frame1.pack(padx=10, pady=150)
@@ -56,12 +59,21 @@ class MyFrame2(tk.Frame):
         super().__init__(parent)
         self.parent = parent
 
-        self.tree = ttk.Treeview(self, columns=("name", "priority", "date"), show="headings")
+        self.tree = ttk.Treeview(self, columns=("name", "priority", "date"), show="headings", style="Custom.Treeview")
         self.tree.heading("name", text="Задача")
         self.tree.heading("priority", text="Приоритет")
         self.tree.heading("date", text="Дедлайн")
         self.tree.grid(row=3, column=0, padx=5, pady=5)
         self.tree.bind("<ButtonRelease-1>", )
+
+        self.tree.column("name", anchor="center", width=200)
+        self.tree.heading("name", text="Задача", anchor="center")
+
+        self.tree.column("priority", anchor="center", width=200)
+        self.tree.heading("priority", text="Приоритет", anchor="center")
+
+        self.tree.column("date", anchor="center", width=200)
+        self.tree.heading("date", text="Дедлайн", anchor="center")
 
     def clear_tree(self):
         for item in self.tree.get_children():
