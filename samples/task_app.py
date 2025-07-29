@@ -1,7 +1,5 @@
 import tkinter as tk
-from dataclasses import dataclass
-from tkinter import ttk, messagebox
-import json
+from tkinter import ttk
 from tkcalendar import DateEntry
 from tkinter import END
 
