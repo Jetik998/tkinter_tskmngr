@@ -12,6 +12,7 @@ class Controller:
         deadline = self.ui.main_window.frame1.date_entry.get()
         self.logic.validator.validate_inputs(name, priority)
         self.ui.main_window.frame1.reset_inputs()
+        self.ui.main_window.frame2.show_btn_edit()
         task = self.logic.task.create_task(name, priority, deadline)
         task = self.logic.task.obj_to_dict(task)
         self.logic.data.new_task(task)
@@ -29,6 +30,8 @@ class Controller:
         self.logic.data.delete_task(selected)
         self.ui.main_window.frame2.clear_tree()
         self.load_treeview()
+        self.ui.main_window.frame2.hide_change_btns()
+
 
     def edit_task(self):
         name = self.ui.main_window.frame1.entry.get()
@@ -39,8 +42,9 @@ class Controller:
         self.load_treeview()
         self.ui.main_window.frame1.set_inputs(task)
         self.ui.main_window.frame1.edit_task_btn(text="Применить")
+        self.ui.main_window.frame2.hide_btn_edit()
 
     def _bind_events(self):
         self.ui.main_window.frame1.btn.config(command=self.save_task)
-        self.ui.main_window.frame2.btn_del.config(command=self.delete_task)
+        self.ui.main_window.frame2.btn_yes.config(command=self.delete_task)
         self.ui.main_window.frame2.btn_edit.config(command=self.edit_task)

@@ -75,11 +75,9 @@ class MyFrame1(tk.Frame):
 
     def edit_task_btn(self, text):
         if text == "Добавить":
-            print("СТАРТ")
             self.btn.config(text="Добавить")
         elif text == "Применить":
-            print("Финиш")
-            self.btn.config(text="Применить")
+            self.btn.config(text="Изменить")
 
 
 class MyFrame2(tk.Frame):
@@ -107,11 +105,16 @@ class MyFrame2(tk.Frame):
         self.tree.column("date", anchor="center", width=200)
         self.tree.heading("date", text="Дедлайн", anchor="center")
 
-        self.btn_del = ttk.Button(self, text="Удалить")
+        self.btn_del = ttk.Button(self, text="Удалить", command=self.del_change)
         self.btn_del.pack(side="right", padx=5, pady=5)
 
         self.btn_edit = ttk.Button(self, text="Изменить")
         self.btn_edit.pack(side="right", padx=5, pady=5)
+
+        self.btn_no = ttk.Button(self, text="Нет", command=self.hide_change_btns)
+        self.btn_yes = ttk.Button(self, text="Да")
+
+
 
     def clear_tree(self):
         for item in self.tree.get_children():
@@ -130,6 +133,43 @@ class MyFrame2(tk.Frame):
 
     def selected_task(self):
         return self.selected_task
+
+    def show_btn_edit(self):
+        if not self.btn_edit.winfo_ismapped():
+            self.btn_edit.pack(side="right", padx=5, pady=5)
+
+    def hide_btn_edit(self):
+        if self.btn_edit.winfo_ismapped():
+            self.btn_edit.pack_forget()
+
+    def show_btn_del(self):
+        if not self.btn_del.winfo_ismapped():
+            self.btn_del.pack(side="right", padx=5, pady=5)
+
+    def hide_btn_del(self):
+        if self.btn_del.winfo_ismapped():
+            self.btn_del.pack_forget()
+
+    def hide_change_btns(self):
+        self.hide_buttons(self.btn_yes, self.btn_no)
+        self.show_buttons(self.btn_edit, self.btn_del)
+
+    def show_change_btns(self):
+        self.show_buttons(self.btn_yes, self.btn_no) #
+
+    def del_change(self):
+        self.hide_buttons(self.btn_del,self.btn_edit)
+        self.show_buttons(self.btn_yes,self.btn_no)
+
+    def hide_buttons(self, *buttons):
+        for b in buttons:
+            b.pack_forget()
+
+    def show_buttons(self, *buttons):
+        for b in buttons:
+            b.pack(side="right", padx=5, pady=5)
+
+
 
 
 class UI:
