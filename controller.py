@@ -6,6 +6,7 @@ class Controller:
         self.load_treeview()
 
     def save_task(self):
+        self.ui.main_window.frame1.edit_task_btn(text="Добавить")
         name = self.ui.main_window.frame1.entry.get()
         priority = self.ui.main_window.frame1.combo.get()
         deadline = self.ui.main_window.frame1.date_entry.get()
@@ -29,6 +30,17 @@ class Controller:
         self.ui.main_window.frame2.clear_tree()
         self.load_treeview()
 
+    def edit_task(self):
+        name = self.ui.main_window.frame1.entry.get()
+        self.logic.validator.validate_edit_task(name)
+        selected = self.ui.main_window.frame2.selected_task
+        task = self.logic.data.edit_task(selected)
+        self.ui.main_window.frame2.clear_tree()
+        self.load_treeview()
+        self.ui.main_window.frame1.set_inputs(task)
+        self.ui.main_window.frame1.edit_task_btn(text="Применить")
+
     def _bind_events(self):
         self.ui.main_window.frame1.btn.config(command=self.save_task)
         self.ui.main_window.frame2.btn_del.config(command=self.delete_task)
+        self.ui.main_window.frame2.btn_edit.config(command=self.edit_task)

@@ -1,4 +1,3 @@
-import tkinter as tk
 from ui import UI
 from logic import Logic
 from controller import Controller

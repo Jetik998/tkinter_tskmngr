@@ -3,8 +3,6 @@ from tkinter import ttk
 from tkcalendar import DateEntry
 
 
-
-
 class MainWindow:
     def __init__(self, root):
         self.root = root
@@ -37,8 +35,6 @@ class MainWindow:
         self.frame2.pack(padx=10, pady=0)
 
 
-
-
 class MyFrame1(tk.Frame):
     def __init__(self, parent):
         super().__init__(parent)
@@ -61,7 +57,7 @@ class MyFrame1(tk.Frame):
 
         self.label_date = ttk.Label(self, text="Дедлайн")
         self.label_date.grid(row=0, column=2, padx=5, pady=5)
-        self.date_entry = DateEntry(self, state="readonly", locale='ru_RU')
+        self.date_entry = DateEntry(self, state="readonly", locale="ru_RU")
         self.date_entry.grid(row=1, column=2, padx=5, pady=5)
 
         self.btn = ttk.Button(self, text="Добавить")
@@ -72,13 +68,24 @@ class MyFrame1(tk.Frame):
         self.combo.delete(0, "end")
         self.date_entry.delete(0, "end")
 
+    def set_inputs(self, task):
+        self.entry.insert(0, task["name"])
+        self.combo.set(task["priority"])
+        self.date_entry.set_date(task["deadline"])
+
+    def edit_task_btn(self, text):
+        if text == "Добавить":
+            print("СТАРТ")
+            self.btn.config(text="Добавить")
+        elif text == "Применить":
+            print("Финиш")
+            self.btn.config(text="Применить")
+
 
 class MyFrame2(tk.Frame):
     def __init__(self, parent):
-        super().__init__(parent) #borderwidth=3, relief="solid"
+        super().__init__(parent)  # borderwidth=3, relief="solid"
         self.parent = parent
-
-
 
         self.tree = ttk.Treeview(
             self,
@@ -101,10 +108,10 @@ class MyFrame2(tk.Frame):
         self.tree.heading("date", text="Дедлайн", anchor="center")
 
         self.btn_del = ttk.Button(self, text="Удалить")
-        self.btn_del.pack(side='right', padx=5, pady=5)
+        self.btn_del.pack(side="right", padx=5, pady=5)
 
         self.btn_edit = ttk.Button(self, text="Изменить")
-        self.btn_edit.pack(side='right', padx=5, pady=5)
+        self.btn_edit.pack(side="right", padx=5, pady=5)
 
     def clear_tree(self):
         for item in self.tree.get_children():

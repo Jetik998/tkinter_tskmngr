@@ -1,7 +1,6 @@
 import json
 import os
 from typing import Dict, List, Union, Optional, Any, Type, Tuple
-from datetime import datetime
 from tkinter import messagebox
 
 
@@ -17,8 +16,6 @@ class Task:
         self.priority = priority
         self.deadline = deadline
         self.id = None
-
-
 
     def __str__(self):
         return f"{self.name} {self.priority} {self.deadline}"
@@ -55,7 +52,7 @@ class Data:
     ) -> None:
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
-            print(json.dumps(data, ensure_ascii=False, indent=4))
+            # print(json.dumps(data, ensure_ascii=False, indent=4))
 
     # Добавление задачи
     @classmethod
@@ -68,11 +65,23 @@ class Data:
 
     @classmethod
     def delete_task(cls, selected: Tuple[str, ...]) -> None:
-        print(f"selected = {selected}")
         data = cls.load_data(cls.filename)
         if data:
             data = [task for task in data if str(task["id"]) not in selected]
             cls.save_data(cls.filename, data)
+
+    @classmethod
+    def edit_task(cls, selected: Tuple[str, ...]) -> Dict[str, Any]:
+        if not selected:
+            messagebox.showerror("Ошибка", "Выберите задачу")
+            raise ValueError("Не выбрана задача")
+        data = cls.load_data(cls.filename)
+        if data:
+            task = [task for task in data if str(task["id"]) in selected]
+            print(task)
+            print(selected)
+            Data.delete_task(selected)
+            return task[0]
 
 
 class InputValidator:
@@ -84,6 +93,11 @@ class InputValidator:
         if not priority:
             messagebox.showerror("Ошибка", "Введите приоритет")
             raise ValueError("Приоритет не может быть пустым")
+
+    def validate_edit_task(self, name: str):
+        if name:
+            messagebox.showerror("Ошибка", "Нужно применить изменения")
+            raise ValueError("Нужно применить изменения")
 
 
 class Logic:
