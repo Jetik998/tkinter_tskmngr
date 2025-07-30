@@ -3,7 +3,9 @@ from tkinter import ttk
 from tkcalendar import DateEntry
 
 
-class UI:
+
+
+class MainWindow:
     def __init__(self, root):
         self.root = root
         self.root.title("Tasklist")
@@ -30,9 +32,11 @@ class UI:
         self.style.configure("Custom.Treeview.Heading", font=("Segoe UI", 10))
 
         self.frame1 = MyFrame1(root)
-        self.frame1.pack(padx=10, pady=150)
+        self.frame1.pack(padx=10, pady=0)
         self.frame2 = MyFrame2(root)
-        self.frame2.pack(padx=10, pady=100)
+        self.frame2.pack(padx=10, pady=0)
+
+
 
 
 class MyFrame1(tk.Frame):
@@ -57,7 +61,7 @@ class MyFrame1(tk.Frame):
 
         self.label_date = ttk.Label(self, text="Дедлайн")
         self.label_date.grid(row=0, column=2, padx=5, pady=5)
-        self.date_entry = DateEntry(self, state="readonly")  # locale='ru_RU'
+        self.date_entry = DateEntry(self, state="readonly", locale='ru_RU')
         self.date_entry.grid(row=1, column=2, padx=5, pady=5)
 
         self.btn = ttk.Button(self, text="Добавить")
@@ -71,11 +75,10 @@ class MyFrame1(tk.Frame):
 
 class MyFrame2(tk.Frame):
     def __init__(self, parent):
-        super().__init__(parent)
+        super().__init__(parent) #borderwidth=3, relief="solid"
         self.parent = parent
 
-        self.btn_del = ttk.Button(self, text="Удалить")
-        self.btn_del.grid(row=6, column=0, padx=5, pady=5)
+
 
         self.tree = ttk.Treeview(
             self,
@@ -87,7 +90,7 @@ class MyFrame2(tk.Frame):
         self.tree.heading("name", text="Задача")
         self.tree.heading("priority", text="Приоритет")
         self.tree.heading("date", text="Дедлайн")
-        self.tree.grid(row=3, column=0, padx=5, pady=5)
+        self.tree.pack()
         self.tree.bind("<<TreeviewSelect>>", self.get_select_task)
 
         self.tree.column("name", anchor="center", width=200)
@@ -96,6 +99,12 @@ class MyFrame2(tk.Frame):
         self.tree.heading("priority", text="Приоритет", anchor="center")
         self.tree.column("date", anchor="center", width=200)
         self.tree.heading("date", text="Дедлайн", anchor="center")
+
+        self.btn_del = ttk.Button(self, text="Удалить")
+        self.btn_del.pack(side='right', padx=5, pady=5)
+
+        self.btn_edit = ttk.Button(self, text="Изменить")
+        self.btn_edit.pack(side='right', padx=5, pady=5)
 
     def clear_tree(self):
         for item in self.tree.get_children():
@@ -114,3 +123,9 @@ class MyFrame2(tk.Frame):
 
     def selected_task(self):
         return self.selected_task
+
+
+class UI:
+    def __init__(self):
+        self.root = tk.Tk()
+        self.main_window = MainWindow(self.root)

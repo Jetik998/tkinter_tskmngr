@@ -7,8 +7,7 @@ import os
 if os.path.exists("data.json"):
     os.remove("data.json")
 if __name__ == "__main__":
-    root = tk.Tk()
-    ui = UI(root)
+    ui = UI()
     logic = Logic()
     controller = Controller(ui, logic)
-    root.mainloop()
+    ui.root.mainloop()

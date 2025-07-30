@@ -15,14 +15,10 @@ class Task:
     ):
         self.name = name
         self.priority = priority
-        self.deadline = self._to_iso_date(deadline)
+        self.deadline = deadline
         self.id = None
 
-    @staticmethod
-    def _to_iso_date(raw_date: Optional[str]) -> Optional[str]:
-        if raw_date is None:
-            return None
-        return datetime.strptime(raw_date, "%m/%d/%y").strftime("%Y-%m-%d")
+
 
     def __str__(self):
         return f"{self.name} {self.priority} {self.deadline}"
