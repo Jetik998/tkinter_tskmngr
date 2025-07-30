@@ -1,20 +1,21 @@
 import json
 import os
-from typing import Any, Type, Tuple
-
+from typing import Dict, List, Union, Optional, Any, Type, Tuple
+from datetime import datetime
+from tkinter import messagebox
 
 class Task:
 
-    def __init__(self, name: str = None, priority: str = None, deadline: str = None):
+    def __init__(self, name: Optional[str] = None, priority: Optional[str] = None, deadline: Optional[str] = None):
         self.name = name
         self.priority = priority
         self.deadline = self._to_iso_date(deadline)
         self.id = None
 
     @staticmethod
-    def _to_iso_date(raw_date: str) -> str:
-        from datetime import datetime
-
+    def _to_iso_date(raw_date: Optional[str]) -> Optional[str]:
+        if raw_date is None:
+            return None
         return datetime.strptime(raw_date, "%m/%d/%y").strftime("%Y-%m-%d")
 
     def __str__(self):
@@ -34,6 +35,9 @@ class Task:
         return {"name": self.name, "priority": self.priority, "deadline": self.deadline}
 
 
+
+
+
 class Data:
     filename = "data.json"
 
@@ -47,7 +51,7 @@ class Data:
 
     # Функция для сохранения данных в файл
     @classmethod
-    def save_data(cls, filename: str, data) -> None:
+    def save_data(cls, filename: str, data: List[Union[Any, Dict[str, Union[str, int]]]]) -> None:
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
             print(json.dumps(data, ensure_ascii=False, indent=4))
@@ -62,17 +66,25 @@ class Data:
         cls.save_data(cls.filename, data)
 
     @classmethod
-    def delete_task(cls, selected: Tuple[int]) -> None:
-        selected = list(selected)
-        print(selected)
+    def delete_task(cls, selected: Tuple[str, ...]) -> None:
+        print(f'selected = {selected}')
         data = cls.load_data(cls.filename)
         if data:
             data = [task for task in data if str(task["id"]) not in selected]
-
             cls.save_data(cls.filename, data)
 
+class InputValidator:
+    @staticmethod
+    def validate_inputs(name, priority):
+        if not name:
+            messagebox.showerror("Ошибка", "Введите название задачи")
+            raise ValueError("Название задачи не может быть пустым")
+        if not priority:
+            messagebox.showerror("Ошибка", "Введите приоритет")
+            raise ValueError("Приоритет не может быть пустым")
 
 class Logic:
     def __init__(self):
         self.task = Task
         self.data = Data()
+        self.validator = InputValidator()

@@ -22,7 +22,9 @@ class UI:
             "TCombobox",
             font=("Segoe UI", 10),
             padding=5,
-            background=self.root.cget("background"),
+            background="white",  # фон выпадающего списка
+            fieldbackground="white",  # фон текстового поля
+            foreground="black" # цвет текста
         )
         self.style.configure("Custom.Treeview", font=("Segoe UI", 12))
         self.style.configure("Custom.Treeview.Heading", font=("Segoe UI", 10))
@@ -46,13 +48,13 @@ class MyFrame1(tk.Frame):
         self.label_combo = ttk.Label(self, text="Приоритет")
         self.label_combo.grid(row=0, column=1, padx=5, pady=5)
         self.combo = ttk.Combobox(
-            self, values=["Критично", "Важно", "Нормально", "Не важно"], width=15
+            self, values=["Критично", "Важно", "Нормально", "Не важно"], width=15, state="readonly"
         )
         self.combo.grid(row=1, column=1, padx=5, pady=5)
 
         self.label_date = ttk.Label(self, text="Дедлайн")
         self.label_date.grid(row=0, column=2, padx=5, pady=5)
-        self.date_entry = DateEntry(self)
+        self.date_entry = DateEntry(self, state="readonly") # locale='ru_RU'
         self.date_entry.grid(row=1, column=2, padx=5, pady=5)
 
         self.btn = ttk.Button(self, text="Добавить")

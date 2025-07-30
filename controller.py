@@ -9,6 +9,7 @@ class Controller:
         name = self.ui.frame1.entry.get()
         priority = self.ui.frame1.combo.get()
         deadline = self.ui.frame1.date_entry.get()
+        self.logic.validator.validate_inputs(name, priority)
         self.ui.frame1.reset_inputs()
         task = self.logic.task.create_task(name, priority, deadline)
         task = self.logic.task.obj_to_dict(task)
