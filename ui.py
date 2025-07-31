@@ -159,6 +159,7 @@ class MyFrame2(tk.Frame):
         self.hide_buttons(self.btn_del,self.btn_edit)
         self.show_buttons(self.btn_yes,self.btn_no)
 
+
     def hide_buttons(self, *buttons):
         for b in buttons:
             b.pack_forget()
