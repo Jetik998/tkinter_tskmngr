@@ -4,6 +4,8 @@ class Controller:
         self.logic = logic
         self._bind_events()
         self.load_treeview()
+        self.frame1 = self.ui.main_window.frame1
+        self.frame2 = self.ui.main_window.frame2
 
     def save_task(self):
         self.ui.main_window.frame1.edit_task_btn(text="Добавить")

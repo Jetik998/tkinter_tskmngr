@@ -114,8 +114,6 @@ class MyFrame2(tk.Frame):
         self.btn_no = ttk.Button(self, text="Нет", command=self.hide_change_btns)
         self.btn_yes = ttk.Button(self, text="Да")
 
-
-
     def clear_tree(self):
         for item in self.tree.get_children():
             self.tree.delete(item)
@@ -170,9 +168,29 @@ class MyFrame2(tk.Frame):
             b.pack(side="right", padx=5, pady=5)
 
 
+class Menu(tk.Menu):
+    def __init__(self, parent):
+        super().__init__(parent)
+        self.parent = parent
+
+        self.menu = tk.Menu(self, tearoff=0)
+        self.menu.add_command(label="Новый")
+        self.menu.add_command(label="Открыть")
+        self.menu.add_separator()
+        self.menu.add_command(label="Выход")
+        self.add_cascade(label="Файл", menu=self.menu)
+
+        self.editmenu = tk.Menu(self, tearoff=0)
+        self.editmenu.add_command(label="Стиль")
+        self.editmenu.add_command(label="Шрифт")
+        self.add_cascade(label="Настройки", menu=self.editmenu)
+
 
 
 class UI:
     def __init__(self):
         self.root = tk.Tk()
+
         self.main_window = MainWindow(self.root)
+        self.menu = Menu(self.root)
+        self.root.config(menu=self.menu)
