@@ -43,7 +43,6 @@ class Task:
 class Data:
     filename = "data.json"
 
-    # Функция для выгрузки данных из файла
     @classmethod
     def load_data(cls, filename: str) -> Any:
         if os.path.exists(filename) and os.path.getsize(filename) > 0:
@@ -51,7 +50,6 @@ class Data:
                 return json.load(f)
         return []
 
-    # Функция для сохранения данных в файл
     @classmethod
     def save_data(
         cls, filename: str, data: List[Union[Any, Dict[str, Union[str, int]]]]
@@ -60,7 +58,6 @@ class Data:
             json.dump(data, f, ensure_ascii=False, indent=4)
             # print(json.dumps(data, ensure_ascii=False, indent=4))
 
-    # Добавление задачи
     @classmethod
     def new_task(cls, task: object) -> None:
         """
@@ -106,7 +103,6 @@ class Data:
             Data.delete_task(selected)
             return task[0]
 
-
 class InputValidator:
 
     @staticmethod
@@ -118,11 +114,17 @@ class InputValidator:
         if not priority:
             messagebox.showerror("Ошибка", "Введите приоритет")
             raise ValueError("Приоритет не может быть пустым")
-
-    def validate_edit_task(self, selected: Tuple[str, ...]) -> bool:
-        if not selected:
-            messagebox.showerror("Ошибка", "Не выбрана задача для редактирования")
-            raise ValueError("Не выбрана задача для изменения")
+    @staticmethod
+    def validate_edit_task(selected: Tuple[str, ...], arg="") -> None:
+        """Проверяет, что задача выбрана."""
+        if arg == "Изменить":
+            if not selected:
+                messagebox.showerror("Ошибка", "Не выбрана задача для редактирования")
+                raise ValueError("Не выбрана задача для изменения")
+        elif arg == "Удалить":
+            if not selected:
+                messagebox.showerror("Ошибка", "Не выбрана задача для удаления")
+                raise ValueError("Не выбрана задача для изменения")
 
 
 class Logic:

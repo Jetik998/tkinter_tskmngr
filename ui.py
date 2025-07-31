@@ -120,7 +120,7 @@ class MyFrame2(tk.Frame):
         self.tree.column("date", anchor="center", width=200)
         self.tree.heading("date", text="Дедлайн", anchor="center")
 
-        self.btn_del = ttk.Button(self, text="Удалить", command=self.on_btn_del)
+        self.btn_del = ttk.Button(self, text="Удалить")
         self.btn_del.pack(side="right", padx=5, pady=5)
 
         self.btn_edit = ttk.Button(self, text="Изменить")
@@ -169,7 +169,8 @@ class MyFrame2(tk.Frame):
         self.buttons(self.btn_del, self.btn_edit)
         self.buttons(self.btn_no, self.btn_yes)
 
-    def buttons(self, *buttons):
+    @staticmethod
+    def buttons(*buttons):
         """
         Если кнопка не отображается — показывает её,
         если отображается — скрывает.
@@ -180,7 +181,8 @@ class MyFrame2(tk.Frame):
             else:
                 button.pack_forget()
 
-    def show_buttons(self, *buttons):
+    @staticmethod
+    def show_buttons(*buttons):
         """
         Отображает переданные кнопки, если они скрыты.
         """

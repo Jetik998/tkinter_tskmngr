@@ -42,6 +42,17 @@ class Controller:
             for task in data:
                 self.frame2.add_to_treeview(task)
 
+    def validate_selection(self):
+        """
+        Проверяет, выбрана ли задача в TreeView.
+
+        Если задача не выбрана — выводит сообщение об ошибке.
+        Если выбрана — скрывает кнопки "Удалить" и "Изменить" и показывает кнопки "Да" и "Нет" для подтверждения удаления.
+        """
+        selected = self.frame2.selected_task
+        self.logic.validator.validate_edit_task(selected, arg="Удалить")
+        self.frame2.on_btn_del()
+
     def delete_task(self):
         """
         Удаляет выбранные задачи.
@@ -71,7 +82,7 @@ class Controller:
         После сохранения изменений кнопка возвращается в состояние "Добавить".
         """
         selected = self.frame2.selected_task
-        self.logic.validator.validate_edit_task(selected)
+        self.logic.validator.validate_edit_task(selected, arg="Изменить")
         self.frame2.buttons(self.frame2.btn_del, self.frame2.btn_edit)
         self.frame1.change_text_btn(arg="Изменить")
         task = self.logic.data.edit_task(selected)
@@ -83,3 +94,5 @@ class Controller:
         self.frame1.btn.config(command=self.save_task)
         self.frame2.btn_yes.config(command=self.delete_task)
         self.frame2.btn_edit.config(command=self.edit_task)
+        self.frame2.btn_del.config(command=self.validate_selection)
+
