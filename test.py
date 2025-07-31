@@ -1,7 +1,9 @@
 import tkinter as tk
 
+
 def change_font():
     print(f"Выбран шрифт: {font_var.get()}")
+
 
 root = tk.Tk()
 root.title("Многоуровневое меню")

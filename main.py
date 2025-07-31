@@ -1,7 +1,6 @@
 from ui import UI
 from logic import Logic
 from controller import Controller
-import os
 
 """
 if os.path.exists("data.json"):

@@ -27,6 +27,12 @@ class Task:
     def create_task(
         cls: Type["Task"], name: str, priority: str, deadline: str
     ) -> object:
+        """
+        Создаёт и возвращает новый объект задачи.
+
+        Принимает имя, приоритет и дедлайн,
+        создаёт экземпляр класса Task и возвращает его.
+        """
         task = Task(name=name, priority=priority, deadline=deadline)
         return task
 
@@ -57,6 +63,13 @@ class Data:
     # Добавление задачи
     @classmethod
     def new_task(cls, task: object) -> None:
+        """
+        Добавляет новую задачу в список.
+
+        Загружает текущие задачи из файла, добавляет новую задачу,
+        перенумеровывает задачи, чтобы у каждой был уникальный и последовательный ID,
+        и сохраняет обновлённый список обратно в файл.
+        """
         data = cls.load_data(cls.filename)
         data.append(task)
         for index, item in enumerate(data, start=1):
@@ -65,6 +78,13 @@ class Data:
 
     @classmethod
     def delete_task(cls, selected: Tuple[str, ...]) -> None:
+        """
+        Удаляет задачи с указанными ID из данных.
+
+        Загружает текущие задачи из файла, фильтрует их,
+        исключая задачи с ID из списка selected,
+        и сохраняет обновлённый список обратно в файл.
+        """
         data = cls.load_data(cls.filename)
         if data:
             data = [task for task in data if str(task["id"]) not in selected]
@@ -72,21 +92,26 @@ class Data:
 
     @classmethod
     def edit_task(cls, selected: Tuple[str, ...]) -> Dict[str, Any]:
+        """
+        Проверяет, что выбрана хотя бы одна задача.
+        Загружает данные из файла, фильтрует задачи по выбранным ID,
+        удаляет выбранные задачи и возвращает первую из них.
+        """
         if not selected:
             messagebox.showerror("Ошибка", "Выберите задачу")
             raise ValueError("Не выбрана задача")
         data = cls.load_data(cls.filename)
         if data:
             task = [task for task in data if str(task["id"]) in selected]
-            print(task)
-            print(selected)
             Data.delete_task(selected)
             return task[0]
 
 
 class InputValidator:
+
     @staticmethod
     def validate_inputs(name: str, priority: str):
+        """Проверяет, что обязательные поля заполнены."""
         if not name:
             messagebox.showerror("Ошибка", "Введите название задачи")
             raise ValueError("Название задачи не может быть пустым")
@@ -94,10 +119,10 @@ class InputValidator:
             messagebox.showerror("Ошибка", "Введите приоритет")
             raise ValueError("Приоритет не может быть пустым")
 
-    def validate_edit_task(self, name: str):
-        if name:
-            messagebox.showerror("Ошибка", "Нужно применить изменения")
-            raise ValueError("Нужно применить изменения")
+    def validate_edit_task(self, selected: Tuple[str, ...]) -> bool:
+        if not selected:
+            messagebox.showerror("Ошибка", "Не выбрана задача для редактирования")
+            raise ValueError("Не выбрана задача для изменения")
 
 
 class Logic:

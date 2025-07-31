@@ -64,20 +64,35 @@ class MyFrame1(tk.Frame):
         self.btn.grid(row=1, column=3, padx=5, pady=5)
 
     def reset_inputs(self):
+        """
+        Очищает все поля ввода: текстовое поле, комбобокс и поле даты.
+        """
         self.entry.delete(0, "end")
         self.combo.delete(0, "end")
         self.date_entry.delete(0, "end")
 
     def set_inputs(self, task):
+        """
+        Заполняет поля ввода данными из переданной задачи.
+
+        Устанавливает имя, приоритет и дату дедлайна.
+        """
         self.entry.insert(0, task["name"])
         self.combo.set(task["priority"])
         self.date_entry.set_date(task["deadline"])
 
-    def edit_task_btn(self, text):
-        if text == "Добавить":
-            self.btn.config(text="Добавить")
-        elif text == "Применить":
+    def change_text_btn(self, arg=""):
+        """
+        Меняет текст на кнопке self.btn.
+
+        Если передан аргумент "Изменить" — устанавливает текст "Изменить".
+        Если текущий текст "Изменить" и передан аргумент "Добавить" — меняет текст на "Добавить".
+        """
+        text = self.btn["text"]
+        if arg == "Изменить":
             self.btn.config(text="Изменить")
+        if text == "Изменить" and arg == "Добавить":
+            self.btn.config(text="Добавить")
 
 
 class MyFrame2(tk.Frame):
@@ -105,20 +120,28 @@ class MyFrame2(tk.Frame):
         self.tree.column("date", anchor="center", width=200)
         self.tree.heading("date", text="Дедлайн", anchor="center")
 
-        self.btn_del = ttk.Button(self, text="Удалить", command=self.del_change)
+        self.btn_del = ttk.Button(self, text="Удалить", command=self.on_btn_del)
         self.btn_del.pack(side="right", padx=5, pady=5)
 
         self.btn_edit = ttk.Button(self, text="Изменить")
         self.btn_edit.pack(side="right", padx=5, pady=5)
 
-        self.btn_no = ttk.Button(self, text="Нет", command=self.hide_change_btns)
+        self.btn_no = ttk.Button(
+            self, text="Нет", command=self.on_btn_del
+        )  # , command=self.hide_change_btns
         self.btn_yes = ttk.Button(self, text="Да")
 
     def clear_tree(self):
+        """Очищает все элементы из TreeView."""
         for item in self.tree.get_children():
             self.tree.delete(item)
 
+    # Добавляет строки в тревью
     def add_to_treeview(self, task):
+        """
+        Добавляет строку в TreeView на основе атрибутов task.
+        Присваивает элементу уникальный идентификатор (ID).
+        """
         self.tree.insert(
             "",
             "end",
@@ -127,46 +150,43 @@ class MyFrame2(tk.Frame):
         )
 
     def get_select_task(self, event):
+        """
+        Обработчик выбора строки в TreeView.
+
+        Сохраняет идентификаторы выбранных элементов в атрибут selected_task
+        при возникновении события выбора.
+        """
         self.selected_task = event.widget.selection()
 
+    # Передает выбранную строку в контроллер
     def selected_task(self):
         return self.selected_task
 
-    def show_btn_edit(self):
-        if not self.btn_edit.winfo_ismapped():
-            self.btn_edit.pack(side="right", padx=5, pady=5)
+    def on_btn_del(self):
+        """
+        Переключает видимость кнопок
+        """
+        self.buttons(self.btn_del, self.btn_edit)
+        self.buttons(self.btn_no, self.btn_yes)
 
-    def hide_btn_edit(self):
-        if self.btn_edit.winfo_ismapped():
-            self.btn_edit.pack_forget()
-
-    def show_btn_del(self):
-        if not self.btn_del.winfo_ismapped():
-            self.btn_del.pack(side="right", padx=5, pady=5)
-
-    def hide_btn_del(self):
-        if self.btn_del.winfo_ismapped():
-            self.btn_del.pack_forget()
-
-    def hide_change_btns(self):
-        self.hide_buttons(self.btn_yes, self.btn_no)
-        self.show_buttons(self.btn_edit, self.btn_del)
-
-    def show_change_btns(self):
-        self.show_buttons(self.btn_yes, self.btn_no) #
-
-    def del_change(self):
-        self.hide_buttons(self.btn_del,self.btn_edit)
-        self.show_buttons(self.btn_yes,self.btn_no)
-
-
-    def hide_buttons(self, *buttons):
-        for b in buttons:
-            b.pack_forget()
+    def buttons(self, *buttons):
+        """
+        Если кнопка не отображается — показывает её,
+        если отображается — скрывает.
+        """
+        for button in buttons:
+            if not button.winfo_ismapped():
+                button.pack(side="right", padx=5, pady=5)
+            else:
+                button.pack_forget()
 
     def show_buttons(self, *buttons):
-        for b in buttons:
-            b.pack(side="right", padx=5, pady=5)
+        """
+        Отображает переданные кнопки, если они скрыты.
+        """
+        for button in buttons:
+            if not button.winfo_ismapped():
+                button.pack(side="right", padx=5, pady=5)
 
 
 class Menu(tk.Menu):
@@ -185,7 +205,6 @@ class Menu(tk.Menu):
         self.editmenu.add_command(label="Стиль")
         self.editmenu.add_command(label="Шрифт")
         self.add_cascade(label="Настройки", menu=self.editmenu)
-
 
 
 class UI:
