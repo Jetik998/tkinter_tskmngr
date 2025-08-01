@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from tkcalendar import DateEntry
+from tkinter import font
 
 
 class MainWindow:
@@ -8,31 +9,30 @@ class MainWindow:
         self.root = root
         self.root.title("Tasklist")
         self.root.geometry("1280x960")
-
         self.style = ttk.Style()
+        self.serif = "None"
+        self.edit_serif(self.serif)
         self.style.theme_use("clam")
-        self.style.configure(
-            "TLabel",
-            font=("Segoe UI", 10),
-            padding=5,
-            background=self.root.cget("background"),
-        )
-        self.style.configure("TEntry", font=("Segoe UI", 10), padding=5)
-        self.style.configure(
-            "TCombobox",
-            font=("Segoe UI", 10),
-            padding=5,
-            background="white",  # фон выпадающего списка
-            fieldbackground="white",  # фон текстового поля
-            foreground="black",  # цвет текста
-        )
-        self.style.configure("Custom.Treeview", font=("Segoe UI", 12))
-        self.style.configure("Custom.Treeview.Heading", font=("Segoe UI", 10))
 
         self.frame1 = MyFrame1(root)
         self.frame1.pack(padx=10, pady=0)
         self.frame2 = MyFrame2(root)
         self.frame2.pack(padx=10, pady=0)
+
+
+    def edit_serif(self, serif):
+        self.serif = serif
+        self.style.configure("TEntry", font=(self.serif, 10), padding=5)
+        self.style.configure(
+            "TCombobox",
+            font=(self.serif, 10),
+            padding=5,
+            background="white",  # фон выпадающего списка
+            fieldbackground="white",  # фон текстового поля
+            foreground="black",  # цвет текста
+        )
+        self.style.configure("Custom.Treeview", font=(self.serif, 12))
+        self.style.configure("Custom.Treeview.Heading", font=(self.serif, 10))
 
 
 class MyFrame1(tk.Frame):
@@ -195,18 +195,34 @@ class Menu(tk.Menu):
     def __init__(self, parent):
         super().__init__(parent)
         self.parent = parent
+        self.serif = None
+        self.on_font_change = None
+
 
         self.menu = tk.Menu(self, tearoff=0)
-        self.menu.add_command(label="Новый")
-        self.menu.add_command(label="Открыть")
-        self.menu.add_separator()
-        self.menu.add_command(label="Выход")
         self.add_cascade(label="Файл", menu=self.menu)
 
+        self.menu.add_command(label="Новый")
+        self.menu.add_command(label="Открыть")
+        self.menu.add_command(label="Выход")
+
         self.editmenu = tk.Menu(self, tearoff=0)
-        self.editmenu.add_command(label="Стиль")
-        self.editmenu.add_command(label="Шрифт")
         self.add_cascade(label="Настройки", menu=self.editmenu)
+
+        self.fonts_menu = tk.Menu(self.editmenu, tearoff=0)
+        fonts = sorted(list(font.families()))
+        for f in fonts:
+            self.fonts_menu.add_command(label=f, command=lambda f=f: self._font_selected(f))
+        self.editmenu.add_command(label="Стиль")
+        self.editmenu.add_cascade(label="Шрифты", menu=self.fonts_menu)
+
+    def _font_selected(self, f):
+        if self.on_font_change:
+            self.on_font_change(f)
+
+
+
+
 
 
 class UI:

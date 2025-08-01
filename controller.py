@@ -5,8 +5,11 @@ class Controller:
         self.frame1 = self.ui.main_window.frame1
         self.frame2 = self.ui.main_window.frame2
         self.menu = self.ui.menu
+        self.main_window = self.ui.main_window
         self._bind_events()
         self.load_treeview()
+
+        self.ui.menu.on_font_change = self.change_serif
 
     # Создание и добавление задачи
     def save_task(self):
@@ -89,6 +92,9 @@ class Controller:
         self.frame2.clear_tree()
         self.load_treeview()
         self.frame1.set_inputs(task)
+
+    def change_serif(self, serif):
+        self.main_window.edit_serif(serif)
 
     def _bind_events(self):
         self.frame1.btn.config(command=self.save_task)
